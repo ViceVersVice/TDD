@@ -10,4 +10,3 @@ class CRUD_CarView(ModelViewSet):
     # viewset is the best choice for standart CRUD
     queryset = Car.objects.all()
     serializer_class = CarSerializer
-    lookup_url_kwarg = "car_id"

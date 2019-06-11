@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.conf.urls import url, include
 from rest_framework import routers
 from . import views
 
@@ -9,10 +9,10 @@ CRUD_Car_router.register("cars", views.CRUD_CarView)
 
 app_name = "UsersApp"
 urlpatterns = [
-    path("", include(CRUD_Car_router.urls)),
+    url(r"^", include(CRUD_Car_router.urls)),
 
     # this is without drf
-    path("", views.CarsView, name="cars_view"),
-    path("<int:id>/", views.CarsView, name="cars_view"),
+    url(r"^", views.CarsView, name="cars_view"),
+    url(r"^<int:id>/", views.CarsView, name="cars_view"),
 
 ]

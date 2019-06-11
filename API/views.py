@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.http import QueryDict
+from django.core import serializers
+import json
 # Create your views here.
 
 
@@ -24,11 +26,15 @@ def CarsView(request, id=None):
     if request.method == "GET":
         if id:
             car = get_object_or_404(Car, id=id)
-            data = car.values()
-            print(data)
-            return JsonResponse(data)
+            #fields = tuple([field.name for field in car._meta.get_fields()])
+            #obj = json.loads(json.dumps(model_to_dict(car)))
+            obj = model_to_dict(car)
+            #data = serializers.serialize("json", [car,], fields=fields)
+            #print(data)
+            return JsonResponse(obj)
         else:
-            data = [obj for obj in Car.objects.all().values()]
+            #data = [obj for obj in Car.objects.all().values()]
+            data = list(Car.objects.all().values())
             return JsonResponse(data, safe=False)
     elif request.method == "POST":
         if id:
@@ -46,7 +52,9 @@ def CarsView(request, id=None):
         like PUT, PATCH, so it will be difficult to do something with this"""
         if not id:
             return HttpResponse(status=403)
-        #car = get_object_or_404(Car, id=id)
-        #car.update()
-        data = QueryDict(request.body)
-        return HttpResponse("...............")
+        data = json.loads(request.body)
+        car = get_object_or_404(Car, id=id)
+        for attr, val in data.items():
+            setattr(car, attr, val)
+        car.save()
+        return JsonResponse(model_to_dict(car))

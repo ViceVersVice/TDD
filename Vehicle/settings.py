@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     #REST_FRAMEWORK
     'rest_framework',
     #my apps
+    'lists.apps.ListsConfig',
     'API.apps.ApiConfig',
     #django apps
     'django.contrib.admin',

@@ -31,9 +31,9 @@ class NewVisitorTest(unittest.TestCase):
             inputbox.get_attribute("placeholder"),
             "Enter a to-do item",
         )
-        inputbox.send_keys("Buy freedom")
+        inputbox.send_keys("Buy will")
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(5)
 
         self.check_for_row_in_list_table("1: Buy freedom")
         self.check_for_row_in_list_table("2: Buy will")

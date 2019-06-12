@@ -16,8 +16,29 @@ class SomeTest(TestCase):
     def test_can_save_a_POST_request(self):
         response = self.client.post("/some-view/",
                                     data={"item_text": "a new list item"})
-        self.assertIn("a new list item", response.content.decode("utf8"))
-        self.assertTemplateUsed(response, "home.html")
+
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, "a new list item")
+
+    def test_redirects_after_POST(self):
+        response = self.client.post("/some-view/",
+                                    data={"item_text": "a new list item"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["location"], "/some-view/")
+
+    def test_displays_all_list_items(self):
+        item_1 = Item.objects.create(text="Item 1")
+        item_2 = Item.objects.create(text="Item 2")
+        response = self.client.get("/some-view/")
+        content = response.content.decode()
+        self.assertIn("1: Item 1", content)
+        self.assertIn("2: Item 2", content)
+
+
+    def test_can_only_save_item_when_necessary(self):
+        response = self.client.get("/some-view/")
+        self.assertEqual(Item.objects.count(), 0)
 
 class ItemModelTest(TestCase):
 

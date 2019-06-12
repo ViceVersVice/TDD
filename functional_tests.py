@@ -26,14 +26,15 @@ class NewVisitorTest(unittest.TestCase):
             "Enter a to-do item",
         )
         inputbox.send_keys("Buy freedom")
-        inputbox.send_keys(Keys.Enter)
-        self.fail("Finish the Test!")
+        inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(rows.text == "1: Buy freedom" for row in rows)
+            any(rows.text == "1: Buy freedom" for row in rows),
+            "New to do item does not appear to be in html"
         )
+        self.fail("Finish the Test!")
 if __name__ == "__main__":
     unittest.main(warnings="ignore")

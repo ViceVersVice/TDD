@@ -25,16 +25,7 @@ class SomeTest(TestCase):
         response = self.client.post("/some-view/",
                                     data={"item_text": "a new list item"})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/some-view/")
-
-    def test_displays_all_list_items(self):
-        item_1 = Item.objects.create(text="Item 1")
-        item_2 = Item.objects.create(text="Item 2")
-        response = self.client.get("/some-view/")
-        content = response.content.decode()
-        self.assertIn("1: Item 1", content)
-        self.assertIn("2: Item 2", content)
-
+        self.assertEqual(response["location"], "/some-view/list1/")
 
     def test_can_only_save_item_when_necessary(self):
         response = self.client.get("/some-view/")
@@ -52,3 +43,19 @@ class ItemModelTest(TestCase):
         second_saved_item = all_items[1]
         self.assertEqual(first_saved_item.text, "Some 1 item")
         self.assertEqual(second_saved_item.text, "Some 2 item")
+
+class ListViewTest(TestCase):
+
+    def test_uses_list_template(self):
+        response = self.client.get("/some-view/list1/")
+        self.assertTemplateUsed(response, "list.html")
+
+    def test_displays_all_items(self):
+        Item.objects.create(text="Item 1")
+        Item.objects.create(text="Item 2")
+
+        response = self.client.get("/some-view/list1/")
+        print(response.status_code)
+
+        self.assertContains(response, "Item 1")
+        self.assertContains(response, "Item 2")

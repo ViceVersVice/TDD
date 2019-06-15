@@ -4,4 +4,4 @@ db.sqlite3
 geckodriver.log
 *.pyc
 *.txt
- static/
+static/

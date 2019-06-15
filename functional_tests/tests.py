@@ -14,7 +14,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        staging_server = "olek-kh-staging.tk" #os.environ.get("STAGING_SERVER")
+        staging_server = "olek-kh-staging.tk:8000" #os.environ.get("STAGING_SERVER")
         if staging_server:
             self.live_server_url = "http://" + staging_server
 
@@ -41,6 +41,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_start_a_list_for_one_user(self):
 
         self.browser.get(f"{self.live_server_url}/some-view/")
+        print("URLLLL", f"{self.live_server_url}/some-view/")
         self.assertIn("To-Do", self.browser.title)
         header_text = self.browser.find_element_by_tag_name("h1").text
         self.assertIn("To-Do", header_text)

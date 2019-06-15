@@ -25,7 +25,7 @@ SECRET_KEY = '*pg_ng!xprodnn=p%r1zbuxpamb!$8pc12s14)#-#%+g(-^-h1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["olek-kh-staging.tk", "165.22.29.144"]
+ALLOWED_HOSTS = ["olek-kh-staging.tk", "165.22.29.144", "127.0.0.1"]
 
 
 # Application definition
